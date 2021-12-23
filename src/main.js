@@ -52,11 +52,11 @@ const getBalance = async function () {
 const getProducts = async function() {
   const _productsLength = await contract.methods.getProductsLength().call()
   const _products = []
-  for (let i = 0; i < _productsLength; i++) {
+  for (let index = 0; index < _productsLength; index++) {
     let _product = new Promise(async (resolve, reject) => {
-      let p = await contract.methods.readProduct(i).call()
+      let p = await contract.methods.readProduct(index).call()
       resolve({
-        index: i,
+        index: index,
         owner: p[0],
         name: p[1],
         image: p[2],
