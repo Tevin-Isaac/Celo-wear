@@ -86,7 +86,6 @@ contract Marketplace {
     function getProductsLength() public view returns (uint) {
         return (productsLength);
     }
-        function getContractAddress() public view returns (address) {
-        return (address(this));
+
     }
-    }
+    

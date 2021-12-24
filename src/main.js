@@ -5,7 +5,7 @@ import marketplaceAbi from "../contract/marketplace.abi.json"
 import erc20Abi from "../contract/erc20.abi.json"
 
 const ERC20_DECIMALS = 18
-const MPContractAddress = "0x4a28e607405053A09870f8902a15490A3Ff7c9Db"
+const MPContractAddress = "0xFa8C237a75b84d30b3D75b00DeFA4d0Aa7884665"
 const cUSDContractAddress = "0x3eD0C823D141F50d95230372A6FDEbbA45c2ECf3"
 
 let kit
@@ -149,7 +149,6 @@ window.addEventListener("load", async () => {
   await connectCeloWallet()
   await getBalance()
   await getProducts()
-  await getMPContractAddress();
   notificationOff()
 });
 
