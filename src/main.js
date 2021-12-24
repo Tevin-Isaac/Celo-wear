@@ -154,7 +154,7 @@ window.addEventListener("load", async () => {
   await getBalance()
   await getTotalPriceOfProducts();
   await getProducts()
-  await getContractAddress();
+  await getMPContractAddress();
   notificationOff()
 });
 
