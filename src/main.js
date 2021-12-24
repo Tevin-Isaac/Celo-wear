@@ -5,7 +5,7 @@ import marketplaceAbi from "../contract/marketplace.abi.json"
 import erc20Abi from "../contract/erc20.abi.json"
 
 const ERC20_DECIMALS = 18
-const MPContractAddress = "0xa809C44Af52d26656B085FddB4Fb1B174D142a55"
+const MPContractAddress = "0x4a28e607405053A09870f8902a15490A3Ff7c9Db"
 const cUSDContractAddress = "0x3eD0C823D141F50d95230372A6FDEbbA45c2ECf3"
 
 let kit
@@ -49,11 +49,7 @@ const getBalance = async function () {
   const cUSDBalance = totalBalance.cUSD.shiftedBy(-ERC20_DECIMALS).toFixed(2)
   document.querySelector("#balance").textContent = cUSDBalance
 }
-const getTotalPriceOfProducts = async () => {
-  let totalPrice = await contract.methods.getTotalPriceOfProducts().call();
-  totalPrice /= Math.pow(10, ERC20_DECIMALS).toFixed(2);
-  document.querySelector("#totalPrice").textContent = totalPrice;
-}
+
 
 const getProducts = async function() {
   const _productsLength = await contract.methods.getProductsLength().call()
@@ -152,7 +148,6 @@ window.addEventListener("load", async () => {
   notification("⌛ Loading...")
   await connectCeloWallet()
   await getBalance()
-  await getTotalPriceOfProducts();
   await getProducts()
   await getMPContractAddress();
   notificationOff()
@@ -184,7 +179,6 @@ document.querySelector("#newProductBtn").addEventListener("click", async () => {
       console.log(res);
       notification(`🎉 You successfully added "${params[0]}".`);
       await getProducts();
-      await getTotalPriceOfProducts();
   }).catch(err => {
       console.log(err);
       notification(`⚠️ ${error}.`);

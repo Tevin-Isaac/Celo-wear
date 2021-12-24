@@ -89,14 +89,4 @@ contract Marketplace {
         function getContractAddress() public view returns (address) {
         return (address(this));
     }
-
-    function getTotalPriceOfProducts() public view returns (uint) {
-        uint _totalPrice = 0;
-        if (productsLength > 0) {
-            for (uint i = 0; i < productsLength; i++) {
-                _totalPrice += products[i].price;
-            }
-        }
-        return (_totalPrice);
     }
-}
