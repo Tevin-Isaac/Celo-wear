@@ -90,11 +90,11 @@ function renderProducts() {
 }
 
 function productTemplate(_product) {
-  const productSold = parseInt(product.sold);
-    const productPrice = (product.price / Math.pow(10, ERC20_DECIMALS).toFixed(2));
+  const productSold = parseInt(_product.sold);
+    const productPrice = (_product.price / Math.pow(10, ERC20_DECIMALS).toFixed(2));
   return `
   <div class="card border-secondary mb-4">
-  <img class="card-img-top" src="${product.image}" alt="Card image">
+  <img class="card-img-top" src="${_product.image}" alt="Card image">
   <div class="position-absolute top-0 end-0 ${productSold ? `bg-danger text-white` : `bg-warning`} mt-4 px-2 py-1 rounded-start">
       ${productSold ? "Sold" : "For Sale"}
   </div>
@@ -111,7 +111,7 @@ function productTemplate(_product) {
           <span>${_product.location}</span>
         </p>
         <div class="d-grid gap-2">
-        <a class="btn btn-lg buyBtn fs-6 p-3 ${productSold ? "btn-secondary disabled" : "btn-outline-dark"}" id=${product.index}>
+        <a class="btn btn-lg buyBtn fs-6 p-3 ${productSold ? "btn-secondary disabled" : "btn-outline-dark"}" id=${_product.index}>
             Buy for ${productPrice} cUSD
         </a>
     </div>
@@ -163,8 +163,9 @@ document.querySelector("#newProductBtn").addEventListener("click", async () => {
   const imageUrl = document.getElementById("newImgUrl").value;
   const description = document.getElementById("newProductDescription").value;
   const price = document.getElementById("newPrice").value;
+  const location = document.getElementById("newLocation").value;
 
-  if (!name, !imageUrl, !description, !price) {
+  if (!name, !imageUrl,!location, !description, !price) {
       notification("⚠️ Please fill in all fields in the form.");
       return;
   }
@@ -172,6 +173,7 @@ document.querySelector("#newProductBtn").addEventListener("click", async () => {
   const params = [
       name,
       imageUrl,
+      location,
       description,
       // Create a bigNumber object so the contract can read it
       new BigNumber(price).shiftedBy(ERC20_DECIMALS).toString()
