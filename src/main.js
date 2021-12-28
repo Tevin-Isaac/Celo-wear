@@ -3,10 +3,8 @@ import { newKitFromWeb3 } from "@celo/contractkit"
 import BigNumber from "bignumber.js"
 import marketplaceAbi from "../contract/marketplace.abi.json"
 import erc20Abi from "../contract/erc20.abi.json"
+import {cUSDContractAddress, MPContractAddress ,ERC20_DECIMALS} from "./utils/constants";
 
-const ERC20_DECIMALS = 18
-const MPContractAddress = "0xFa8C237a75b84d30b3D75b00DeFA4d0Aa7884665"
-const cUSDContractAddress = "0x3eD0C823D141F50d95230372A6FDEbbA45c2ECf3"
 
 let kit
 let contract
@@ -56,7 +54,7 @@ const getProducts = async function() {
   const _products = []
   for (let i = 0; i < _productsLength; i++) {
     let _product = new Promise(async (resolve, reject) => {
-      let p = await contract.methods.readProduct(i).call()
+      let p = await contract.methods.products(i).call()
       resolve({
         index: i,
         owner: p[0],
