@@ -171,7 +171,6 @@ document.querySelector("#newProductBtn").addEventListener("click", async () => {
       new BigNumber(price).shiftedBy(ERC20_DECIMALS).toString()
   ];
   notification(`⌛ Adding "${params[0]}"...`);
-
   contract.methods.writeProduct(...params).send({ from: kit.defaultAccount }).then(async (res) => {
       console.log(res);
       notification(`🎉 You successfully added "${params[0]}".`);
