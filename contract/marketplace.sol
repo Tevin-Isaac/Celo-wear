@@ -92,7 +92,7 @@ contract Marketplace {
             _sold,
             _verified
         );
-        productsLength.add(1);
+        productsLength = productsLength.add(1);
     }
 
     function buyProduct(uint _index) public  payable isVerified(_index)  {
@@ -105,7 +105,7 @@ contract Marketplace {
             ),
             "Transfer failed."
         );
-        products[_index].sold.add(1);
+        products[_index].sold = products[_index].sold.add(1);
     }
 
     function getProductsLength() public view returns (uint) {
