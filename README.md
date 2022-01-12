@@ -8,7 +8,7 @@ This is a Celo bookshop marketplace dapp where users can:
 * Add your own books to the dapp
 
 ## Live Screenshot
-![Screenshot from 2021-12-24 19-19-21](https://user-images.githubusercontent.com/81568615/147366435-17ee83ac-7fb1-49ed-97ba-157937e94ae1.png)
+![Screenshot from 2022-01-12 15-08-11](https://user-images.githubusercontent.com/81568615/149138236-20e03e97-3736-491a-b1d6-225e69f2030c.png)
 ![Screenshot from 2021-12-24 20-09-40](https://user-images.githubusercontent.com/81568615/147366440-ee633552-5cb3-42be-9e21-ecc2f84869c7.png)
 ![Screenshot from 2021-12-24 19-19-53](https://user-images.githubusercontent.com/81568615/147366443-2cc3fa01-a90c-42a1-a798-d0ae9c2df624.png)
 
