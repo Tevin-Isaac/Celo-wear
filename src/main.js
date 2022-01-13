@@ -12,6 +12,7 @@ import {cUSDContractAddress, MPContractAddress ,ERC20_DECIMALS} from "./utils/co
 let kit
 let contract
 let products = []
+let adminAddress
 
 const connectCeloWallet = async function () {
   if (window.celo) {
@@ -51,6 +52,11 @@ const getBalance = async function () {
   document.querySelector("#balance").textContent = cUSDBalance
 }
 
+const getAdminAddress = async function() {
+  adminAddress = await contract.methods.adminAddress().call()
+
+}
+
 
 const getProducts = async function() {
   const _productsLength = await contract.methods.getProductsLength().call()
@@ -67,6 +73,7 @@ const getProducts = async function() {
         location: p[4],
         price: new BigNumber(p[5]),
         sold: p[6],
+        verified : p[7]
       });
       reject(error => { console.log(error) });
     });
@@ -88,16 +95,16 @@ function renderProducts() {
 
 function productTemplate(_product) {
   const productSold = parseInt(_product.sold);
-    const productPrice = (_product.price / Math.pow(10, ERC20_DECIMALS).toFixed(2));
+
   return `
   <div class="card border-secondary mb-4">
   <img class="card-img-top" src="${_product.image}" alt="Card image">
-  <div class="position-absolute top-0 end-0 ${productSold ? `bg-danger text-white` : `bg-warning`} mt-4 px-2 py-1 rounded-start">
-      ${productSold ? "Sold" : "For Sale"}
+  <div class="position-absolute top-0 end-0 bg-warning mt-4 px-2 py-1 rounded-start">
+    ${productSold} Sales  
   </div>
       <div class="card-body text-left p-4 position-relative">
         <div class="translate-middle-y position-absolute top-0">
-        ${identiconTemplate(_product.owner)}
+<!--        ${identiconTemplate(_product.owner)}-->
         </div>
         <h2 class="card-title fs-4 fw-bold mt-2">${_product.name}</h2>
         <p class="card-text mb-4" style="min-height: 82px">
@@ -108,14 +115,59 @@ function productTemplate(_product) {
           <span>${_product.location}</span>
         </p>
         <div class="d-grid gap-2">
-        <a class="btn btn-lg buyBtn fs-6 p-3 ${productSold ? "btn-secondary disabled" : "btn-outline-dark"}" id=${_product.index}>
-            Buy for ${productPrice} cUSD
-        </a>
+        
+        
+       ${payButtonTemplate(_product)}
     </div>
       </div>
     </div>
   `
 }
+
+function payButtonTemplate(_product) {
+
+
+  if(!_product.verified){
+
+    if(kit.defaultAccount === adminAddress){
+      return `
+   <a class="btn btn-lg verifyBtn fs-6 p-3  btn-outline-dark"  id=${_product.index}>
+            Verify This Book
+        </a>
+  `
+    }
+    return `
+<a class="btn btn-lg fs-6 p-3  btn-secondary disabled ">
+            Not Yet Verified
+        </a>
+   
+  `
+
+  }
+
+else {
+    const productPrice = (_product.price / Math.pow(10, ERC20_DECIMALS).toFixed(2));
+    return `
+  <a class="btn btn-lg buyBtn fs-6 p-3  btn-outline-dark"
+       id=${_product.index}>
+      Buy for ${productPrice} cUSD
+     </a>
+  `
+  }
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
 
 function identiconTemplate(_address) {
   const icon = blockies
@@ -130,7 +182,7 @@ function identiconTemplate(_address) {
   <div class="rounded-circle overflow-hidden d-inline-block border border-white border-2 shadow-sm m-0">
     <a href="https://alfajores-blockscout.celo-testnet.org/address/${_address}/transactions"
         target="_blank">
-        <img src="${icon}" width="48" alt="${_address}">
+        <img src="${icon}" width="20" alt="${_address}">
     </a>
   </div>
   `
@@ -149,7 +201,9 @@ window.addEventListener("load", async () => {
   notification("⌛ Loading...")
   await connectCeloWallet()
   await getBalance()
+  await getAdminAddress()
   await getProducts()
+
   notificationOff()
 });
 
@@ -160,7 +214,7 @@ document.querySelector("#newProductBtn").addEventListener("click", async () => {
   const price = document.getElementById("newPrice").value;
   const location = document.getElementById("newLocation").value;
 
-  if (!name, !imageUrl,!location, !description, !price) {
+  if (!name || !imageUrl || !location || !description || !price) {
       notification("⚠️ Please fill in all fields in the form.");
       return;
   }
@@ -186,6 +240,7 @@ document.querySelector("#newProductBtn").addEventListener("click", async () => {
 
   document.querySelector("#marketplace").addEventListener("click", async (e) => {
     if (e.target.className.includes("buyBtn")) {
+      console.log("buyBtn Clicked")
       const index = e.target.id
       notification("⌛ Waiting for payment approval...")
       try {
@@ -195,14 +250,41 @@ document.querySelector("#newProductBtn").addEventListener("click", async () => {
       }
       notification(`⌛ Awaiting payment for "${products[index].name}"...`)
       try {
-        const result = await contract.methods
+        contract.methods
           .buyProduct(index)
           .send({ from: kit.defaultAccount })
         notification(`🎉 You successfully bought "${products[index].name}".`)
         getProducts()
         getBalance()
+        return
       } catch (error) {
         notification(`⚠️ ${error}.`)
       }
     }
-  })  
+
+
+    if (e.target.className.includes("verifyBtn")) {
+
+      console.log("verifyBtn Clicked")
+      const index = e.target.id
+      console.log({
+      e
+    })
+      notification(`⌛Verifying "${products[index].name}"...`)
+      try {
+        const result = await contract.methods
+            .verifyProduct(index)
+            .send({ from: kit.defaultAccount })
+        notification(`🎉 You successfully verified "${products[index].name}".`)
+        getProducts()
+        getBalance()
+
+      } catch (error) {
+        notification(`⚠️ ${error}.`)
+      }
+    }
+
+
+  })
+
+
