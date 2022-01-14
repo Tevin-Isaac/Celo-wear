@@ -9,7 +9,7 @@ This is a Celo bookshop marketplace dapp where users can:
 
 ## Live Screenshot
 ![Screenshot from 2022-01-12 15-08-11](https://user-images.githubusercontent.com/81568615/149138236-20e03e97-3736-491a-b1d6-225e69f2030c.png)
-![Screenshot from 2022-01-14 04-05-02](https://user-images.githubusercontent.com/81568615/149434128-dc350dbb-a218-498c-ad72-e2e147b2c7bb.png)
+![Screenshot from 2022-01-14 04-05-02](https://user-images.githubusercontent.com/81568615/149434558-8823a793-dc7e-4837-a68e-f8aab11ad9ff.png)
 ![Screenshot from 2021-12-24 20-09-40](https://user-images.githubusercontent.com/81568615/147366440-ee633552-5cb3-42be-9e21-ecc2f84869c7.png)
 ![Screenshot from 2021-12-24 19-19-53](https://user-images.githubusercontent.com/81568615/147366443-2cc3fa01-a90c-42a1-a798-d0ae9c2df624.png)
 
